@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "162734719679",
+    "firebase_url": "https://chat-5054c.firebaseio.com",
+    "project_id": "chat-5054c",
+    "storage_bucket": "chat-5054c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162734719679:android:711988a323627366",
+        "android_client_info": {
+          "package_name": "edu.scu.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162734719679-5kis4oord8ed1i871uiep49urojs6d6p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.scu.chat",
+            "certificate_hash": "a6145503ba5033ea4e66d8f0bca5f1af84680d3f"
+          }
+        },
+        {
+          "client_id": "162734719679-gvlmunnrbhinpobo9dvt4cffa3pufma3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGx6rwpX1Go-K77lCOs7J3GNdbVt319mI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162734719679-gvlmunnrbhinpobo9dvt4cffa3pufma3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
