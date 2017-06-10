@@ -23,6 +23,7 @@
     <string name="loading">Loading…</string>
     <string name="auth_failed">Authentication failed</string>
     <string name="acces_message_option_button">Message option button</string>
+    <string name="contact">Contact</string>
 
     <string name="firebaseui_status_fmt">Firebase User: %s</string>
     <string name="firebaseui_title_text">FirebaseUI Auth</string>
