@@ -61,22 +61,22 @@
             <ImageView
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:src="@drawable/ic_email"
-                android:id="@+id/ic_email"
+                android:src="@drawable/ic_phone"
+                android:id="@+id/ic_phone"
                 android:layout_centerVertical="true"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords"
-                android:hint="Email"
+                android:hint="Phone"
                 android:ems="10"
                 android:imeOptions="actionDone"
-                android:id="@+id/et_email"
+                android:id="@+id/et_phone"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/ic_email"
+                android:layout_toRightOf="@id/ic_phone"
                 android:layout_gravity="center_horizontal" />
         </RelativeLayout>
 

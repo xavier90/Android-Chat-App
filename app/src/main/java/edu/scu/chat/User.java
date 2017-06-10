@@ -9,6 +9,8 @@ import java.util.List;
 public class User {
     private Long id;
     private String entityID;
+    private String phone;
+    private String name;
     private Integer AuthenticationType;
     private String messageColor;
     private Boolean Online;
@@ -22,6 +24,12 @@ public class User {
         this.id = id;
     }
 
+    public User(String name, String phone, String entityID) {
+        this.name = name;
+        this.phone = phone;
+        this.entityID = entityID;
+    }
+
     public User(Long id, String entityID, Integer AuthenticationType, String messageColor, Boolean Online) {
         this.id = id;
         this.entityID = entityID;
@@ -29,6 +37,19 @@ public class User {
         this.messageColor = messageColor;
         this.messageColor = messageColor;
         this.Online = Online;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Long getId() {
