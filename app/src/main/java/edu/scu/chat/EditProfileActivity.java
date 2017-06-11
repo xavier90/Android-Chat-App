@@ -27,6 +27,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private static User user;
     private static final String TAG = "EditProfileActivity";
     private String entityID;
+    private String photoUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         entityID = mFirebaseUser.getUid();
+        photoUrl = mFirebaseUser.getPhotoUrl().toString();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
 
@@ -95,7 +97,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         if (id == R.id.btn_save_profile) {
             name = etName.getText().toString();
             phone = etPhone.getText().toString();
-            databaseReference.child(entityID).setValue(new User(name, phone, entityID));
+
+            databaseReference.child(entityID).setValue(new User(name, phone, entityID, photoUrl));
             startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
         }
     }

@@ -14,6 +14,7 @@ public class User {
     private Integer AuthenticationType;
     private String messageColor;
     private Boolean Online;
+    private String photoUrl;
 
     private List<User> friends;
 
@@ -24,10 +25,11 @@ public class User {
         this.id = id;
     }
 
-    public User(String name, String phone, String entityID) {
+    public User(String name, String phone, String entityID, String photoUrl) {
         this.name = name;
         this.phone = phone;
         this.entityID = entityID;
+        this.photoUrl = photoUrl;
     }
 
     public User(Long id, String entityID, Integer AuthenticationType, String messageColor, Boolean Online) {
@@ -58,6 +60,13 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
     public String getEntityID() {
