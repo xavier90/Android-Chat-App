@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
  */
 
 public class Utils {
+    public static final String CURRENT_USER_ID = "CURRENT_USER_ID";
+    public static final String CONTACT_ID = "CONTACT_ID";
 
     public static final class Options{
         /**

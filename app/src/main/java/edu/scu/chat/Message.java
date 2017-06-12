@@ -10,6 +10,8 @@ public class Message {
     private String name;
     private String photoUrl;
     private String imageUrl;
+    private String currentUserId;
+    private String contactId;
 
     public Message() {
     }
@@ -27,6 +29,20 @@ public class Message {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setCurrentUserId(String currentUserId) {
+        this.currentUserId = currentUserId;
+    }
+    public String getCurrentUserId() {
+        return currentUserId;
+    }
+
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
+    }
+    public String getContactId() {
+        return contactId;
     }
 
     public String getText() {
@@ -59,5 +75,9 @@ public class Message {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isShow(String key) {
+        if (key.equals(this.contactId + t))
     }
 }
