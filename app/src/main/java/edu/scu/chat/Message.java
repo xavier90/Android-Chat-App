@@ -10,8 +10,9 @@ public class Message {
     private String name;
     private String photoUrl;
     private String imageUrl;
-    private String currentUserId;
-    private String contactId;
+    private String senderId;
+    private String recipientId;
+    private int mRecipientOrSenderStatus;
 
     public Message() {
     }
@@ -23,6 +24,14 @@ public class Message {
         this.imageUrl = imageUrl;
     }
 
+    public Message(String text, String name, String photoUrl, String imageUrl, String senderId, String recipientId) {
+        this.text = text;
+        this.name = name;
+        this.photoUrl = photoUrl;
+        this.imageUrl = imageUrl;
+        this.senderId = senderId;
+        this.recipientId = recipientId;
+    }
     public String getId() {
         return id;
     }
@@ -31,18 +40,18 @@ public class Message {
         this.id = id;
     }
 
-    public void setCurrentUserId(String currentUserId) {
-        this.currentUserId = currentUserId;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
-    public String getCurrentUserId() {
-        return currentUserId;
+    public String getsenderId() {
+        return senderId;
     }
 
-    public void setContactId(String contactId) {
-        this.contactId = contactId;
+    public void setRecipientId(String recipientId) {
+        this.recipientId = recipientId;
     }
-    public String getContactId() {
-        return contactId;
+    public String getRecipientId() {
+        return recipientId;
     }
 
     public String getText() {
@@ -77,7 +86,21 @@ public class Message {
         this.imageUrl = imageUrl;
     }
 
-    public boolean isShow(String key) {
-        if (key.equals(this.contactId + t))
+
+    //if entityid fits the condition, we will show the message
+//    public boolean isShow(String key) {
+//        if (key.equals(this.contactId + this.currentUserId) ||
+//                key.equals(this.currentUserId + this.contactId)) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+
+    public int getRecipientOrSenderStatus() {
+        return mRecipientOrSenderStatus;
+    }
+    public void setRecipientOrSenderStatus(int status) {
+        this.mRecipientOrSenderStatus = status;
     }
 }

@@ -8,12 +8,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -30,11 +33,9 @@ import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Indexables;
 import com.google.firebase.appindexing.builders.PersonBuilder;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.storage.FirebaseStorage;
@@ -46,6 +47,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import edu.scu.chat.Utils.Utils;
+import edu.scu.chat.View.ChatMessageBoxView;
 
 import static edu.scu.chat.MainActivity.DEFAULT_MSG_LENGTH_LIMIT;
 import static edu.scu.chat.MainActivity.FRIENDLY_MSG_LENGTH;
@@ -60,6 +62,10 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayoutManager;
     private static final String TAG = "ChatActivity";
     private FirebaseAnalytics mFirebaseAnalytics;
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private EditText mMessageEditText;
+    private ChatMessageBoxView messageBoxView;
+    private ListView listMessages;
 
     //define message view class
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
@@ -86,21 +92,60 @@ public class ChatActivity extends AppCompatActivity {
         mCurrentUserId = getIntent().getStringExtra(Utils.CURRENT_USER_ID);
 
 
+        //handle how to send message
+        messageBoxView = (ChatMessageBoxView) findViewById(R.id.message_box);
+//        final SwipeRefreshLayout mSwipeRefresh = (SwipeRefreshLayout)findViewById(R.id.ptr_layout);
+//        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                if (DEBUG) Timber.d("onRefreshStarted");
+//
+//                BNetworkManager.sharedManager().getNetworkAdapter().loadMoreMessagesForThread(thread)
+//                        .done(new DoneCallback<List<BMessage>>() {
+//                            @Override
+//                            public void onDone(List<BMessage> bMessages) {
+//                                if (DEBUG)
+//                                    Timber.d("New messages are loaded, Amount: %s", (bMessages == null ? "No messages" : bMessages.size()));
+//
+//                                if (bMessages.size() < 2)
+//                                    showToast(getString(R.string.chat_activity_no_more_messages_to_load_toast));
+//                                else {
+//                                    // Saving the position in the list so we could back to it after the update.
+//                                    chatSDKChatHelper.loadMessages(true, false, -1, messagesListAdapter.getCount() + bMessages.size());
+//                                }
+//
+//                                mSwipeRefresh.setRefreshing(false);
+//                            }
+//                        })
+//                        .fail(new FailCallback<Void>() {
+//                            @Override
+//                            public void onFail(Void aVoid) {
+//                                mSwipeRefresh.setRefreshing(false);
+//                            }
+//                        });
+//            }
+//        });
+
+        listMessages = (ListView) findViewById(R.id.list_chat);
+        listMessages.setAdapter(messageListAdatper);
+
+
+
         // TODO: 6/11/17
         //implement one to one message
         //each message user two entity id to make sure which conservation belongs to
 
         //use userid + contactid to query the message history
-        messageChatDatabaseRef = FirebaseDatabase.getInstance().getReference("messages").addChildEventListener(new ChildEventListener() {
-                });
+//        messageChatDatabaseRef = FirebaseDatabase.getInstance().getReference("messages").addChildEventListener(new ChildEventListener() {
+//                });
 
-        previousMessage = (RecyclerView) findViewById(R.id.messageRecyclerView);
+//        previousMessage = (RecyclerView) findViewById(R.id.messageRecyclerView);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setStackFromEnd(true);
 
         mFirebaseAdapter = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(
         Message.class,
-        R.layout.item_message,
+        R.layout.text_message_recipient,
         MessageViewHolder.class,
         messageChatDatabaseRef.child("messages")){
 
@@ -109,7 +154,7 @@ public class ChatActivity extends AppCompatActivity {
                 Message friendlyMessage = super.parseSnapshot(snapshot);
                 friendlyMessage.setContactId(contactID);
                 friendlyMessage.setCurrentUserId(mCurrentUserId);
-                if (friendlyMessage != null && friendlyMessage.isShow()) {
+                if (friendlyMessage != null && friendlyMessage.isShow(snapshot.getKey())) {
 
                     friendlyMessage.setId(snapshot.getKey());
                 }
