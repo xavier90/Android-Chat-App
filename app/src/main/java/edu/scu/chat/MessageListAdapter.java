@@ -1,6 +1,7 @@
 package edu.scu.chat;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by yaojianwang on 6/12/17.
  */
@@ -21,22 +24,22 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<Message> mChatList;
     public static final int SENDER = 0;
     public static final int RECIPIENT = 1;
-    public static final int text = 2;
-    public static final int image = 22;
+    public static final int TEXT = 2;
+    public static final int IMAGE = 22;
+    public static final int SENDER_TEXT = 2;
+    public static final int SENDER_IMAGE = 22;
+    public static final int RECIPIENT_TEXT = 3;
+    public static final int RECIPIENT_IMAGE = 23;
     private Context context;
 
     public MessageListAdapter(List<Message> listOfFireChats, Context context) {
-        mChatList = listOfFireChats;
+        this.mChatList = listOfFireChats;
         this.context = context;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(mChatList.get(position).getRecipientOrSenderStatus()==SENDER){
-            return SENDER;
-        }else {
-            return RECIPIENT;
-        }
+        return mChatList.get(position).getRecipientOrSenderStatus();
     }
 
     @Override
@@ -52,7 +55,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 break;
             case 22: //sender image
                 View viewSenderImage = inflater.inflate(R.layout.image_message_sender, viewGroup, false);
-                viewHolder= new ViewholderSenderImage(viewSenderImage);
+                viewHolder= new ViewHolderSenderImage(viewSenderImage);
                 break;
             case 3: //recipient text
                 View viewRecipientText = inflater.inflate(R.layout.text_message_recipient, viewGroup, false);
@@ -79,7 +82,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 configureSenderView(viewHolderSenderText,position);
                 break;
             case 22:
-                ViewholderSenderImage viewholderSenderImage=(ViewholderSenderImage) viewHolder;
+                ViewHolderSenderImage viewholderSenderImage=(ViewHolderSenderImage) viewHolder;
                 configureSenderView(viewholderSenderImage,position, context);
                 break;
             case 3:
@@ -95,25 +98,67 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
+    // TODO: 6/13/17  
+    //set message text and photo, also can set text time
     private void configureSenderView(ViewHolderSenderText viewHolderSenderText, int position) {
         Message senderMessageText= mChatList.get(position);
         viewHolderSenderText.getSenderMessageTextView().setText(senderMessageText.getText());
+        CircleImageView iview = viewHolderSenderText.getmSenderPhoto();
+
+        if (senderMessageText.getPhotoUrl() != null) {
+            Glide.with(context).load(senderMessageText.getPhotoUrl()).into(iview);
+        } else {
+            iview.setImageDrawable(ContextCompat.getDrawable(context,
+                            R.drawable.ic_action_user));
+        }
+
     }
 
     //use glide to load image url to imageview
-    private void configureSenderView(ViewholderSenderImage viewHolderSenderImage, int position, Context context) {
+    private void configureSenderView(ViewHolderSenderImage viewHolderSenderImage, int position, Context context) {
         Message senderMessageImage= mChatList.get(position);
-        Glide.with(context).load(senderMessageImage.getImageUrl()).into(viewHolderSenderImage.getSenderMessageImageView());
+        if (senderMessageImage.getImageUrl() != null) {
+            Glide.with(context).load(senderMessageImage.getImageUrl()).into(viewHolderSenderImage.getSenderMessageImageView());
+        }
+        CircleImageView iview = viewHolderSenderImage.getmSenderPhoto();
+
+        if (senderMessageImage.getPhotoUrl() != null) {
+            Glide.with(context).load(senderMessageImage.getPhotoUrl()).into(iview);
+        } else {
+            iview.setImageDrawable(ContextCompat.getDrawable(context,
+                    R.drawable.ic_action_user));
+        }
+
     }
 
     private void configureRecipientView(ViewHolderRecipientText viewHolderRecipientText, int position) {
-        Message recipientFireMessageText = mChatList.get(position);
-        viewHolderRecipientText.getRecipientMessageTextView().setText(recipientFireMessageText.getText());
+        Message recipientMessageText = mChatList.get(position);
+        viewHolderRecipientText.getRecipientMessageTextView().setText(recipientMessageText.getText());
+        CircleImageView iview = viewHolderRecipientText.getmRecipientPhoto();
+
+        if (recipientMessageText.getPhotoUrl() != null) {
+            Glide.with(context).load(recipientMessageText.getPhotoUrl()).into(iview);
+        } else {
+            iview.setImageDrawable(ContextCompat.getDrawable(context,
+                    R.drawable.ic_action_user));
+        }
     }
 
     private void configureRecipientView(ViewHolderRecipientImage viewHolderRecipientImage, int position, Context context) {
         Message recipientMessageImage= mChatList.get(position);
-        Glide.with(context).load(recipientMessageImage.getImageUrl()).into(viewHolderRecipientImage.mRecipientMessageImageView);
+
+        if (recipientMessageImage.getImageUrl() != null) {
+            Glide.with(context).load(recipientMessageImage.getImageUrl()).into(viewHolderRecipientImage.mRecipientMessageImageView);
+        }
+        CircleImageView iview = viewHolderRecipientImage.getmRecipientPhoto();
+
+        if (recipientMessageImage.getPhotoUrl() != null) {
+            Glide.with(context).load(recipientMessageImage.getPhotoUrl()).into(iview);
+        } else {
+            iview.setImageDrawable(ContextCompat.getDrawable(context,
+                    R.drawable.ic_action_user));
+        }
+
     }
 
     @Override
@@ -144,28 +189,41 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class ViewHolderSenderText extends RecyclerView.ViewHolder {
 
         private TextView mSenderMessageTextView;
+        private CircleImageView mSenderPhoto;
 
         public ViewHolderSenderText(View itemView) {
             super(itemView);
             mSenderMessageTextView =(TextView)itemView.findViewById(R.id.txt_content);
+            mSenderPhoto = (CircleImageView) itemView.findViewById(R.id.img_user_image);
+
         }
 
         public TextView getSenderMessageTextView() {
             return mSenderMessageTextView;
         }
 
+        public CircleImageView getmSenderPhoto() {
+            return mSenderPhoto;
+        }
+
     }
 
-    public class ViewholderSenderImage extends RecyclerView.ViewHolder {
+    public class ViewHolderSenderImage extends RecyclerView.ViewHolder {
         private ImageView mSenderMessageImageView;
+        private CircleImageView mSenderPhoto;
 
-        public ViewholderSenderImage(View itemView) {
+        public ViewHolderSenderImage(View itemView) {
             super(itemView);
-            mSenderMessageImageView = (ImageView) itemView.findViewById(R.id.img_user_image);
+            mSenderMessageImageView = (ImageView) itemView.findViewById(R.id.chat_image);
+            mSenderPhoto = (CircleImageView) itemView.findViewById(R.id.img_user_image);
         }
 
         public ImageView getSenderMessageImageView() {
             return mSenderMessageImageView;
+        }
+
+        public CircleImageView getmSenderPhoto() {
+            return mSenderPhoto;
         }
     }
 
@@ -174,14 +232,20 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class ViewHolderRecipientText extends RecyclerView.ViewHolder {
 
         private TextView mRecipientMessageTextView;
+        private CircleImageView mRecipientPhoto;
 
         public ViewHolderRecipientText(View itemView) {
             super(itemView);
             mRecipientMessageTextView=(TextView)itemView.findViewById(R.id.txt_content);
+            mRecipientPhoto = (CircleImageView) itemView.findViewById(R.id.img_contact_image);
         }
 
         public TextView getRecipientMessageTextView() {
             return mRecipientMessageTextView;
+        }
+
+        public CircleImageView getmRecipientPhoto() {
+            return mRecipientPhoto;
         }
 
     }
@@ -189,14 +253,20 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class ViewHolderRecipientImage extends RecyclerView.ViewHolder {
 
         private ImageView mRecipientMessageImageView;
+        private CircleImageView mRecipientPhoto;
 
         public ViewHolderRecipientImage(View itemView) {
             super(itemView);
-            mRecipientMessageImageView=(ImageView)itemView.findViewById(R.id.img_user_image);
+            mRecipientMessageImageView=(ImageView)itemView.findViewById(R.id.chat_image);
+            mRecipientPhoto = (CircleImageView) itemView.findViewById(R.id.img_contact_image);
         }
 
         public ImageView getRecipientMessageTextView() {
             return mRecipientMessageImageView;
+        }
+
+        public CircleImageView getmRecipientPhoto() {
+            return mRecipientPhoto;
         }
 
     }

@@ -12,7 +12,7 @@ public class Message {
     private String imageUrl;
     private String senderId;
     private String recipientId;
-    private int mRecipientOrSenderStatus;
+    private int mRecipientOrSenderStatus; //2:sender text 22 sender image 3 recipient text 23 recipient image
 
     public Message() {
     }
@@ -24,9 +24,8 @@ public class Message {
         this.imageUrl = imageUrl;
     }
 
-    public Message(String text, String name, String photoUrl, String imageUrl, String senderId, String recipientId) {
+    public Message(String text, String photoUrl, String imageUrl, String senderId, String recipientId) {
         this.text = text;
-        this.name = name;
         this.photoUrl = photoUrl;
         this.imageUrl = imageUrl;
         this.senderId = senderId;

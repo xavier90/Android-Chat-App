@@ -8,7 +8,7 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         style="@style/CircleIconStyle"
-        android:id="@+id/img_user_image"
+        android:id="@+id/img_contact_image"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_profile"
         android:layout_margin="5dp"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/content"
         android:layout_toLeftOf="@id/txt_time"
-        android:layout_toRightOf="@+id/img_user_image"
+        android:layout_toRightOf="@+id/img_contact_image"
         android:layout_centerVertical="true"
         android:orientation="horizontal">
         <FrameLayout
