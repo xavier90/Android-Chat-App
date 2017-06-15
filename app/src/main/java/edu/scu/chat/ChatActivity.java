@@ -452,6 +452,7 @@ public class ChatActivity extends AppCompatActivity {
                                                         .child(uri.getLastPathSegment());
 
                                         putImageInStorage(storageReference, uri, key);
+
                                     } else {
                                         Log.w(TAG, "Unable to write message to database.",
                                                 databaseError.toException());
@@ -459,6 +460,7 @@ public class ChatActivity extends AppCompatActivity {
                                 }
                             });
                 }
+
             }
         } else if (requestCode == REQUEST_INVITE) {
             if (resultCode == RESULT_OK) {
@@ -493,6 +495,8 @@ public class ChatActivity extends AppCompatActivity {
                                             task.getResult().getDownloadUrl()
                                                     .toString(), senderId, recipientId);
                             messageChatDatabaseRef.child(key).setValue(friendlyMessage);
+
+//                            messageListAdapter.refillAdapter(friendlyMessage);
                         } else {
                             Log.w(TAG, "Image upload task was not successful.",
                                     task.getException());
